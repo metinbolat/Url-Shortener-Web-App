@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRedirectRequest;
+use App\Http\Requests\UpdateRedirectRequest;
 use Illuminate\Http\Request;
 use App\Models\Redirect;
 
@@ -9,7 +11,7 @@ class RedirectController extends Controller
 {
     public function index()
     {
-        $all = Redirect::orderBy('created_at','desc');
+        $all = Redirect::orderBy('created_at', 'desc');
         $redirects = $all->paginate(10);
         return view('backend.index', compact('redirects'));
     }
@@ -19,7 +21,7 @@ class RedirectController extends Controller
         return view('backend.add');
     }
 
-    public function store(Request $request)
+    public function store(StoreRedirectRequest $request)
     {
         Redirect::create($request->all());
         return redirect()->back()->with('message', 'Eklendi!');
@@ -27,15 +29,14 @@ class RedirectController extends Controller
 
     public function edit(Redirect $redirect)
     {
-        //$redirect = Redirect::find($slug);
         return view('backend.edit', compact('redirect'));
     }
-    public function update (Redirect $redirect, Request $request)
+    public function update(Redirect $redirect, UpdateRedirectRequest $request)
     {
         $redirect->update(['name' => $request->name, 'slug' => $request->slug, 'url' => $request->url,]);
         return redirect(route('index'))->with('message', 'Güncellendi!');
     }
-    public function delete (Redirect $redirect)
+    public function delete(Redirect $redirect)
     {
         $redirect->delete();
         return redirect(route('index'))->with('message', 'Silindi!');
