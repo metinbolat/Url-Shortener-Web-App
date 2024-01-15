@@ -23,7 +23,7 @@ class RedirectController extends Controller
 
     public function store(StoreRedirectRequest $request)
     {
-        Redirect::create($request->all());
+        Redirect::create($request->validated());
         return redirect()->back()->with('message', 'Eklendi!');
     }
 
@@ -33,7 +33,7 @@ class RedirectController extends Controller
     }
     public function update(Redirect $redirect, UpdateRedirectRequest $request)
     {
-        $redirect->update(['name' => $request->name, 'slug' => $request->slug, 'url' => $request->url,]);
+        $redirect->update($request->validated());
         return redirect(route('index'))->with('message', 'Güncellendi!');
     }
     public function delete(Redirect $redirect)
